@@ -160,7 +160,7 @@
                   3.6
                 </div>
                 <div class="order_section">
-                  月售107单
+                  月售106单
                 </div>
               </section>
               <section class="shop_rating_order_right">

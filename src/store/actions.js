@@ -32,7 +32,7 @@ export default {
     //  发送异步ajax请求
     const result = await reqFoodTypes()
     // 根据结果提交一个mutation
-    if (result.code === 0) {
+    if (result.code === "0") {
       const foodTypes = result.data
       commit(RECEIVE_FOODTYPES, {foodTypes})
     }
@@ -43,7 +43,7 @@ export default {
     const geohash = state.latitude + ',' + state.longitude
     const result = await reqShops(state.latitude, state.longitude)
     // 根据结果提交一个mutation
-    if (result.code === 0) {
+    if (result.code === "0") {
       const shops = result.data
       commit(RECEIVE_SHOPS, {shops})
     }

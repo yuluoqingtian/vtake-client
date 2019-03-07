@@ -15,104 +15,12 @@
     <nav class="msite_nav">
       <div class="swiper-container">
         <div class="swiper-wrapper">
-          <div class="swiper-slide">
-            <a href="javascript:" class="link_to_food">
+          <div class="swiper-slide" v-for="(foodTypes,index) in foodTypesArr" :key="index">
+            <a href="javascript:" class="link_to_food" v-for="(foodType,index) in foodTypes" :key="index">
               <div class="food_container">
-                <img src="./images/nav/1.jpg">
+                <img :src="foodType.imageUrl">
               </div>
-              <span>甜品饮品</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/2.jpg">
-              </div>
-              <span>商超便利</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/3.jpg">
-              </div>
-              <span>美食</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/4.jpg">
-              </div>
-              <span>简餐</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/5.jpg">
-              </div>
-              <span>新店特惠</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/6.jpg">
-              </div>
-              <span>准时达</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/7.jpg">
-              </div>
-              <span>预订早餐</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/8.jpg">
-              </div>
-              <span>土豪推荐</span>
-            </a>
-          </div>
-          <div class="swiper-slide">
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/9.jpg">
-              </div>
-              <span>甜品饮品</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/10.jpg">
-              </div>
-              <span>商超便利</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/11.jpg">
-              </div>
-              <span>美食</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/12.jpg">
-              </div>
-              <span>简餐</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/13.jpg">
-              </div>
-              <span>新店特惠</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/14.jpg">
-              </div>
-              <span>准时达</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/1.jpg">
-              </div>
-              <span>预订早餐</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/2.jpg">
-              </div>
-              <span>土豪推荐</span>
+              <span>{{foodType.title}}</span>
             </a>
           </div>
         </div>
@@ -140,27 +48,62 @@
 
   export default {
     name: 'MSite',
-    mounted () {
-      //  创建一个Swiper实例对象，来实现轮播
-      new Swiper('.swiper-container', {
-        //配置对象
-        speed: 600,
-        loop: true, // 循环模式选项
-        // 如果需要分页器
-        pagination: {
-          el: '.swiper-pagination',
-        },
-        autoplay: {
-          delay: 3000,
-          stopOnLastSlide: false,
-          disableOnInteraction: true,
-        }
-      })
+    async mounted () {
+
+      //获取食品分类列表
+      this.$store.dispatch('getFoodTypes')
+
+
     },
     components: {HeaderTop, ShopList},
 
     computed: {
-      ...mapState(['address'])
+      ...mapState(['address','foodTypes']),
+
+      foodTypesArr () {
+
+        let bigArr = [] //  大数组
+        let smallArr = [] //  小数组
+        const foodTypes = this.foodTypes
+
+        let fullLength = foodTypes.length
+
+        foodTypes.forEach(foodType => {
+          smallArr.push(foodType)
+          fullLength--
+
+          if (smallArr.length === 8 || fullLength === 0) {
+            console.log(fullLength)
+            bigArr.push(smallArr)
+            smallArr = []
+          }
+        })
+        return bigArr
+
+      }
+    },
+    watch: {
+      foodTypes(value){
+        this.$nextTick(()=>{
+          //  创建一个Swiper实例对象，来实现轮播
+          var mySwiper =  new Swiper('.swiper-container', {
+            //配置对象
+            speed: 600,
+            loop: true, // 循环模式选项
+            // 如果需要分页器
+            pagination: {
+              el: '.swiper-pagination',
+              //type: 'progressbar'
+            },
+            autoplay: {
+              delay: 3000,
+              stopOnLastSlide: false,
+              disableOnInteraction: true,
+            }
+          })
+          mySwiper.pagination.$el.addClass('.swiper-pagination')
+        })
+      }
     }
   }
 </script>
@@ -178,16 +121,20 @@
       .swiper-container
         width 100%
         height 100%
+
         .swiper-wrapper
           width 100%
           height 100%
           .swiper-slide
+            height 85%
             display flex
             justify-content center
             align-items flex-start
             flex-wrap wrap
+            margin-top 20px
             .link_to_food
               width 25%
+
               .food_container
                 display block
                 width 100%
@@ -205,8 +152,9 @@
                 font-size 13px
                 color #666
         .swiper-pagination
-          > span.swiper-pagination-bullet-active
+          > span.swiper-pagination-bullet
             background #02a774
+            margin-bottom -5px
     /*附近商家*/
     .msite_shop_list
       top-border-1px(#e4e4e4)

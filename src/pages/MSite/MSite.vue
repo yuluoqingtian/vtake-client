@@ -1,14 +1,7 @@
 <template>
   <div class="msite">
     <!--首页头部-->
-    <header class="header">
-
-      <span class="header_title">
-            <span class="header_title_text ellipsis">昌平区北七家宏福科技园(337省道北)</span>
-          </span>
-
-    </header>
-    <HeaderTop title="昌平区北七家宏福科技园(337省道北)">
+    <HeaderTop :title="address.name">
        <span class="header_search" slot="left">
          <i class="iconfont icon-sousuo"></i>
        </span>
@@ -143,6 +136,7 @@
   import 'swiper/dist/css/swiper.min.css'
   import HeaderTop from '../../components/HeaderTop/HeaderTop'
   import ShopList from '../../components/ShopList/ShopList'
+  import {mapState} from 'vuex'
 
   export default {
     name: 'MSite',
@@ -163,7 +157,11 @@
         }
       })
     },
-    components: {HeaderTop, ShopList}
+    components: {HeaderTop, ShopList},
+
+    computed: {
+      ...mapState(['address'])
+    }
   }
 </script>
 

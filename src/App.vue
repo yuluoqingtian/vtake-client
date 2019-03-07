@@ -7,8 +7,16 @@
 
 <script>
   import FooterGuide from './components/FooterGuide/FooterGuide.vue'
+  import {mapActions} from 'vuex'
 
   export default {
+    async mounted () {
+      //  根据经纬度获取地址信息
+      this.$store.dispatch('getAddress')
+    },
+    methods: {
+
+    },
     components: {
       FooterGuide
     }

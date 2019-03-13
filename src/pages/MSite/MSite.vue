@@ -13,7 +13,7 @@
     </HeaderTop>
     <!--首页导航-->
     <nav class="msite_nav">
-      <div class="swiper-container">
+      <div class="swiper-container" v-if="foodTypesArr.length">
         <div class="swiper-wrapper">
           <div class="swiper-slide" v-for="(foodTypes,index) in foodTypesArr" :key="index">
             <a href="javascript:" class="link_to_food" v-for="(foodType,index) in foodTypes" :key="index">
@@ -27,6 +27,7 @@
         <!-- Add Pagination -->
         <div class="swiper-pagination"></div>
       </div>
+      <img src="./images/msite_back.svg" alt="back" v-else>
     </nav>
     <!--首页附近商家-->
     <div class="msite_shop_list">
@@ -52,6 +53,7 @@
 
       //获取食品分类列表
       this.$store.dispatch('getFoodTypes')
+      this.$store.dispatch('getShops')
 
 
     },

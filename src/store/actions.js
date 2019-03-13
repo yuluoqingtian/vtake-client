@@ -40,9 +40,12 @@ export default {
 
   async getShops ({commit, state}) {
     //  发送异步ajax请求
-    const geohash = state.latitude + ',' + state.longitude
     const result = await reqShops(state.latitude, state.longitude)
     // 根据结果提交一个mutation
+
+    // console.log(state.latitude,state.longitude)
+    //
+    // console.log(result)
     if (result.code === "0") {
       const shops = result.data
       commit(RECEIVE_SHOPS, {shops})

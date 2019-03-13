@@ -8,7 +8,6 @@
           </div>
           <div class="shop_right">
             <section class="shop_detail_header">
-
               <h4 class="shop_title ellipsis" id="title">
                 <a class="before" v-show="shop.isPremium===1">品牌</a>
                 {{shop.name}}
@@ -21,6 +20,7 @@
             </section>
             <section class="shop_rating_order">
               <section class="shop_rating_order_left">
+                <Star :score="shop.score" :size="24" />
                 <div class="rating_section">
                   {{shop.score}}
                 </div>
@@ -53,8 +53,12 @@
 
 <script>
 
+  import Star from '../Star/Star'
   export default {
     name: 'ShopList',
+    components:{
+      Star
+    },
     computed:{
       shops(){
         return this.$store.state.shops

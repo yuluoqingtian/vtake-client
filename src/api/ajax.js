@@ -3,6 +3,8 @@
 * */
 import axios from 'axios'
 
+axios.defaults.withCredentials=true;
+
 export default function ajax (url, data = {}, type = 'GET') {
   return new Promise(function (resolve, reject) {
     //  执行异步ajax请求，成功调用resolve(),失败调用reject()

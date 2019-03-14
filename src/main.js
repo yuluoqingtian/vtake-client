@@ -9,6 +9,7 @@ import router from './router'
 import store from './store'
 
 /* eslint-disable no-new */
+
 new Vue({
   el: '#app',
   components: { App },
@@ -16,3 +17,4 @@ new Vue({
   router,
   store
 })
+

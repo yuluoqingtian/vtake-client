@@ -9,7 +9,7 @@
         </div>
       </div>
       <div class="login_content">
-        <form >
+        <form>
           <div :class="{on:loginWay}">
             <section class="login_message">
               <input type="tel" maxlength="11" placeholder="手机号" v-model="phoneNumber">
@@ -42,7 +42,7 @@
               </section>
               <section class="login_message">
                 <input type="text" maxlength="11" placeholder="验证码" v-model="captcha">
-                <img class="get_verification" src="/api/imgs" alt="captcha" @click="getNewCaptcha">
+                <img class="get_verification" src="/api/imgs" alt="captcha" @click="getNewCaptcha" ref="captcha">
               </section>
             </section>
           </div>
@@ -60,6 +60,9 @@
 
 <script>
   import AlertTip from '../../components/AlertTip/AlertTip'
+
+  //  引入登陆相关ajax函数
+  import {reqSendCode, reqSmsLogin, reqPwdLogin} from '../../api/index'
 
   export default {
     name: 'Login',
@@ -94,65 +97,108 @@
         this.$router.back()
       },
       //  异步获取验证码
-      getCode () {
+      async getCode () {
         //启动倒计时
         if (this.computeTime === 0) {
           this.computeTime = 60
-          const interValId = setInterval(() => {
+          this.interValId = setInterval(() => {
             this.computeTime--
             if (this.computeTime <= 0) {
-              clearInterval(interValId)
+              clearInterval(this.interValId)
             }
           }, 1000)
         }
 
-        //发送ajax请求
+        //发送ajax请求(向指定验证码发送短信)
+        const result = await reqSendCode(this.phoneNumber)
+        if (result.code === '1') {
+          //  发送验证码失败，1、显示提示，2、停止倒计时
+          this.makeAlert(result.msg)
+          if (this.computeTime) {
+            this.computeTime = 0
+            clearInterval(this.interValId)
+            this.interValId = undefined
+          }
+        }
+
       },
 
-      makeAlert(alertText){
+      makeAlert (alertText) {
         this.showAlert = true
         this.alertText = alertText
       },
 
       //  异步登陆
-      login () {
+      async login () {
         //  前台表单验证
         //  判断登录方式
+        let result
         if (this.loginWay) {  //  短信登陆
           const {isRightPhone, phoneNumber, messageCode} = this
           if (!isRightPhone) {
             this.makeAlert('手机号不正确')
+            return
           } else if (!/^\d{6}$/.test(messageCode)) {
             //  验证码必须是6位数字
             this.makeAlert('验证码必须是6位数字')
+            return
           }
+          //  发送ajax请求短信登陆
+          result = await reqSmsLogin(phoneNumber, messageCode)
 
         } else { // 密码登陆
           const {name, pwd, captcha} = this
           if (!name) {
             //  用户名不能为空
             this.makeAlert('用户名不能为空')
+            return
           } else if (!pwd) {
             //  密码不能为空
             this.makeAlert('密码不能为空')
+            return
           } else if (!captcha) {
             //  验证码不能为空
             this.makeAlert('验证码不能为空')
+            return
           }
+          //  发送ajax请求密码登陆
+          result = await reqPwdLogin(name, pwd, captcha)
+        }
+
+        if (this.computeTime) {
+          this.computeTime = 0
+          clearInterval(this.interValId)
+          this.interValId = undefined
+        }
+
+        //  根据结果数据处理
+        if (result.code === '0') {
+          //  登陆成功
+          const user = result.data
+          //  将user保存到state中
+          this.$store.dispatch('recordUser', user)
+          // 跳转路由去个人中心
+          this.$router.replace('/profile')
+        } else {
+          //  登陆失败
+          this.getNewCaptcha()
+          const msg = result.msg
+          this.makeAlert(msg)
 
         }
+
       },
 
       //  关闭弹窗
-      closeTip(){
+      closeTip () {
         this.showAlert = false
         this.alertText = ''
       },
 
       //  刷新验证码
-      getNewCaptcha(event){
+      getNewCaptcha () {
         //  这里加时间参数是为了让每次的src都不一样，才能刷新
-        event.target.src = '/api/imgs?time='+Date.now()
+        this.$refs.captcha.src = '/api/imgs?time=' + Date.now()
       }
     },
     components: {

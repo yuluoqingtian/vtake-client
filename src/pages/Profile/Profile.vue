@@ -7,12 +7,12 @@
           <i class="iconfont icon-person"></i>
         </div>
         <div class="user-info">
-          <p class="user-info-top">登录/注册</p>
+          <p class="user-info-top">{{userInfo.userName||'登录/注册'}}</p>
           <p>
                 <span class="user-icon">
                   <i class="iconfont icon-shouji icon-mobile"></i>
                 </span>
-            <span class="icon-mobile-number">暂无绑定手机号</span>
+            <span class="icon-mobile-number">{{userInfo.phone||'暂无绑定手机号'}}</span>
           </p>
         </div>
         <span class="arrow">
@@ -91,10 +91,14 @@
 
 <script>
   import HeaderTop from '../../components/HeaderTop/HeaderTop'
+  import {mapState} from 'vuex'
 
   export default {
     name: 'MSite',
-    components: {HeaderTop}
+    components: {HeaderTop},
+    computed: {
+      ...mapState(['userInfo'])
+    }
   }
 </script>
 
@@ -119,7 +123,7 @@
         width 10%
         height 50%
         .icon-sousuo
-          font-size 25px
+          font-size 20px
           color #fff
       .header_title
         position absolute

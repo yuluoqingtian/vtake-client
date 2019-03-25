@@ -1,7 +1,8 @@
 <template>
   <div class="shop_container">
     <ul class="shop_list" v-if="shops.length">
-      <li class="shop_li border-1px" v-for="(shop,index) in shops" :key="index">
+      <li class="shop_li border-1px" v-for="(shop,index) in shops" :key="index"
+          @click="$router.push('/shop')">
         <a>
           <div class="shop_left">
             <img class="shop_img" :src="shop.imagePath">
@@ -20,7 +21,7 @@
             </section>
             <section class="shop_rating_order">
               <section class="shop_rating_order_left">
-                <Star :score="shop.score" :size="24" />
+                <Star :score="shop.score" :size="24"/>
                 <div class="rating_section">
                   {{shop.score}}
                 </div>
@@ -54,13 +55,14 @@
 <script>
 
   import Star from '../Star/Star'
+
   export default {
     name: 'ShopList',
-    components:{
+    components: {
       Star
     },
-    computed:{
-      shops(){
+    computed: {
+      shops () {
         return this.$store.state.shops
       }
     }

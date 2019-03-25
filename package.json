@@ -13,6 +13,7 @@
   "dependencies": {
     "ajax": "0.0.4",
     "axios": "^0.18.0",
+    "qs": "^6.6.0",
     "swiper": "^4.4.6",
     "vue": "^2.5.2",
     "vue-router": "^3.0.2",

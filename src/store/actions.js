@@ -5,13 +5,20 @@
 import {
   RECEIVE_ADDRESS,
   RECEIVE_FOODTYPES,
-  RECEIVE_SHOPS
+  RECEIVE_SHOPS,
+  RECEIVE_USER_INFO,
+  RECEIVE_RATINGS,
+  RECEIVE_INFO,
+  RECEIVE_GOODS
 } from './mutations-type'
 
 import {
   reqAddress,
   reqFoodTypes,
-  reqShops
+  reqShops,
+  reqShopGoods,
+  reqShopInfo,
+  reqShopRatings
 } from '../api'
 
 export default {
@@ -32,7 +39,7 @@ export default {
     //  发送异步ajax请求
     const result = await reqFoodTypes()
     // 根据结果提交一个mutation
-    if (result.code === "0") {
+    if (result.code === '0') {
       const foodTypes = result.data
       commit(RECEIVE_FOODTYPES, {foodTypes})
     }
@@ -46,9 +53,43 @@ export default {
     // console.log(state.latitude,state.longitude)
     //
     // console.log(result)
-    if (result.code === "0") {
+    if (result.code === '0') {
       const shops = result.data
       commit(RECEIVE_SHOPS, {shops})
     }
   },
+
+  //  同步记录用户信息
+  recordUser ({commit}, userInfo) {
+    commit(RECEIVE_USER_INFO, {userInfo})
+  },
+
+  // 异步获取商家信息
+  async getShopInfo({commit}) {
+    const result = await reqShopInfo()
+    if(result.code===0) {
+      const info = result.info
+      console.log(info)
+      commit(RECEIVE_INFO, {info})
+    }
+  },
+
+  async getShopRatings({commit}) {
+    const result = await reqShopRatings()
+    if(result.code===0) {
+      const ratings = result.ratings
+      commit(RECEIVE_RATINGS, {ratings})
+    }
+  },
+
+  // 异步获取商家商品列表
+  async getShopGoods({commit}) {
+    const result = await reqShopGoods()
+    if(result.code===0) {
+      const goods = result.goods
+      commit(RECEIVE_GOODS, {goods})
+    }
+  },
+
+
 }

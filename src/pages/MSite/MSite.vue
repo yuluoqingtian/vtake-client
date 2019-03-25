@@ -2,13 +2,18 @@
   <div class="msite">
     <!--首页头部-->
     <HeaderTop :title="address.name">
-       <span class="header_search" slot="left">
-         <i class="iconfont icon-sousuo"></i>
-       </span>
+      <router-link class="header_search" slot="left" to="/search">
+        <i class="iconfont icon-sousuo"></i>
+      </router-link>
 
-      <span class="header_login" slot="right">
-        <span class="header_login_text">登录|注册</span>
-      </span>
+      <router-link class="header_login" slot="right" :to="userInfo.userId?'/userinfo':'/login'">
+        <span class="header_login_text" v-if="!userInfo.userId">
+          登录|注册
+        </span>
+        <span class="header_login_text" v-else>
+          <i class="iconfont icon-geren"></i>
+        </span>
+      </router-link>
 
     </HeaderTop>
     <!--首页导航-->
@@ -55,12 +60,11 @@
       this.$store.dispatch('getFoodTypes')
       this.$store.dispatch('getShops')
 
-
     },
     components: {HeaderTop, ShopList},
 
     computed: {
-      ...mapState(['address','foodTypes']),
+      ...mapState(['address', 'foodTypes', 'userInfo']),
 
       foodTypesArr () {
 
@@ -85,10 +89,10 @@
       }
     },
     watch: {
-      foodTypes(value){
-        this.$nextTick(()=>{
+      foodTypes (value) {
+        this.$nextTick(() => {
           //  创建一个Swiper实例对象，来实现轮播
-          var mySwiper =  new Swiper('.swiper-container', {
+          var mySwiper = new Swiper('.swiper-container', {
             //配置对象
             speed: 600,
             loop: true, // 循环模式选项
@@ -123,7 +127,6 @@
       .swiper-container
         width 100%
         height 100%
-
         .swiper-wrapper
           width 100%
           height 100%
@@ -136,7 +139,6 @@
             margin-top 20px
             .link_to_food
               width 25%
-
               .food_container
                 display block
                 width 100%

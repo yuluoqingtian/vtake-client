@@ -14,8 +14,15 @@ module.exports = {
       '/api': {  //匹配所有以'api'开头的请求路径
         target: 'http://localhost:8080',//代理目标的基础路径
         changeOrigin: true, //支持跨域
-        pathRewrite:{ //重写路径，去掉开头中的api
-          '^/api':''
+        pathRewrite: { //重写路径，去掉开头中的api
+          '^/api': ''
+        }
+      },
+      '/mock': {
+        target: 'http://result.eolinker.com/Wr86vcA2a3c4dd73e7a7c5b2ab0b80919deca0712adad95?',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/mock': ''
         }
       }
     },

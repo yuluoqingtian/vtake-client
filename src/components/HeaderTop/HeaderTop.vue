@@ -35,7 +35,7 @@
       width 10%
       height 50%
       .icon-sousuo
-        font-size 25px
+        font-size 23.5px
         color #fff
     .header_title
       position absolute
@@ -57,5 +57,9 @@
       top 50%
       transform translateY(-50%)
       .header_login_text
+        font-size 15px
         color #fff
+        .icon-geren
+          font-size 20px
+          color: #fff
 </style>

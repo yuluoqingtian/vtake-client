@@ -30,10 +30,10 @@ export const reqSmsLogin = (phoneNumber,messageCode) => ajax(BASE_URL+'/login_sm
 // 10、用户登出
 
 //  11、获取店铺食品
-export const reqShopGoods = ()=>ajax(MOCK_BASE_URL+'url=goods')
+export const reqShopGoods = ()=>ajax(MOCK_BASE_URL+'uri=goods')
 
 //  12、获取店铺食品
-export const reqShopRatings =()=>ajax(MOCK_BASE_URL+'url=ratings')
+export const reqShopRatings =()=>ajax(MOCK_BASE_URL+'uri=ratings')
 
 //  13、获取店铺食品
 export const reqShopInfo=() =>ajax(MOCK_BASE_URL+'uri=info')

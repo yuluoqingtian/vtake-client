@@ -76,6 +76,7 @@
     .shop_list
       .shop_li
         bottom-border-1px(#f1f1f1)
+        /*touch-action none*/
         width 100%
         > a
           clearFix()

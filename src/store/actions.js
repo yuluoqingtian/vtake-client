@@ -65,31 +65,31 @@ export default {
   },
 
   // 异步获取商家信息
-  async getShopInfo({commit}) {
+  async getShopInfo ({commit}) {
     const result = await reqShopInfo()
-    if(result.code===0) {
+    if (result.code === 0) {
       const info = result.info
       console.log(info)
       commit(RECEIVE_INFO, {info})
     }
   },
 
-  async getShopRatings({commit}) {
+  async getShopRatings ({commit}) {
     const result = await reqShopRatings()
-    if(result.code===0) {
+    if (result.code === 0) {
       const ratings = result.ratings
       commit(RECEIVE_RATINGS, {ratings})
     }
   },
 
   // 异步获取商家商品列表
-  async getShopGoods({commit}) {
+  async getShopGoods ({commit}, callback) {
     const result = await reqShopGoods()
-    if(result.code===0) {
+    if (result.code === 0) {
       const goods = result.goods
       commit(RECEIVE_GOODS, {goods})
+      callback && callback()
     }
   },
-
 
 }
